@@ -1,7 +1,5 @@
 ## time - (k*m*n), space - O(mn)
 from collections import deque
-
-
 class Solution:
     def shortestDistance(self, grid: List[List[int]]) -> int:
         m, n = len(grid), len(grid[0])
