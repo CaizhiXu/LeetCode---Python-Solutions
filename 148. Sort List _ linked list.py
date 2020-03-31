@@ -34,9 +34,11 @@ class Solution(object):
         return dummy.next
 
 
+
+#time - O(nlogn), space - O(1)
 class Solution(object):
     def sortList(self, head):
-        dummy = ListNode(0)
+        dummy = ListNode(-1)
         dummy.next = head
         step = 1
         length = 0
@@ -45,36 +47,33 @@ class Solution(object):
             head = head.next
 
         while step < length:
-            curr, tail = dummy.next, dummy
-            while curr:
-                left = curr
-                for i in range(step - 1):
-                    if not curr:
-                        break
-                    curr = curr.next
-                if curr:
-                    right, curr.next = curr.next, None
-                    curr = right
-                else:
-                    right = None
+            tail = dummy
+            start = dummy.next
+            while start:
+                left_head = start
+                right_head = self.moveByStep(left_head, step)
+                start = self.moveByStep(right_head, step)
 
-                for i in range(step - 1):
-                    if not curr:
-                        break
-                    curr = curr.next
-                if curr:
-                    temp, curr.next = curr.next, None
-                    curr = temp
-
-                while left and right:
-                    if left.val < right.val:
-                        tail.next, left = left, left.next
+                while left_head and right_head:
+                    if left_head.val < right_head.val:
+                        tail.next = left_head
+                        left_head = left_head.next
                     else:
-                        tail.next, right = right, right.next
+                        tail.next = right_head
+                        right_head = right_head.next
                     tail = tail.next
-                tail.next = left or right
+                tail.next = left_head or right_head
                 while tail.next:
                     tail = tail.next
-
             step *= 2
         return dummy.next
+
+    def moveByStep(self, node, step):
+        while node and step > 1:
+            node = node.next
+            step -= 1
+        if node:
+            tmp, node.next = node.next, None
+            return tmp
+        else:
+            return None
