@@ -19,3 +19,26 @@ class Solution:
         nums[low], nums[r] = nums[r], nums[low]
         self.quickSort(nums, left, low - 1)
         self.quickSort(nums, low + 1, right)
+
+
+## time - O(nlogn), space - O(n), mergeSort
+class Solution:
+    def sortArray(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        if n <= 1:
+            return nums
+
+        mid = n // 2
+        left = self.sortArray(nums[:mid])
+        right = self.sortArray(nums[mid:])
+        i, j, k = 0, 0, 0
+        while i < len(left) and j < len(right):
+            if left[i] < right[j]:
+                nums[k] = left[i]
+                i += 1
+            else:
+                nums[k] = right[j]
+                j += 1
+            k += 1
+        nums[k:] = left[i:] or right[j:]
+        return nums
