@@ -22,3 +22,31 @@ class Solution:
             return None
 
         return dfs('JFK', [], num_tick)
+
+
+## time - O(E), space - O(V+E)
+from collections import defaultdict
+
+
+class Solution2:
+    def findItinerary(self, tickets: List[List[str]]) -> List[str]:
+        graph = defaultdict(list)
+        for src, dst in tickets:
+            graph[src].append(dst)
+
+        itinerary = ['JFK']
+        num_tickets = len(tickets)
+        self.backtrack('JFK', graph, itinerary, num_tickets)
+        return itinerary
+
+    def backtrack(self, src, graph, itinerary, num_tickets):
+        if len(itinerary) == num_tickets + 1:
+            return True
+        for nei in sorted(graph[src]):
+            graph[src].remove(nei)
+            itinerary.append(nei)
+            if self.backtrack(nei, graph, itinerary, num_tickets):
+                return True
+            graph[src].append(nei)
+            itinerary.pop()
+        return False
