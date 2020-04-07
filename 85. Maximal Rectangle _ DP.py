@@ -121,30 +121,6 @@ class Solution:
                     res += j - left_pos + 1
         return res
 
-    ##
-    def numRectangle_v2(self, matrix):
-        if not matrix or not matrix[0]:
-            return 0
-        m, n = len(matrix), len(matrix[0])
-        left = [[0]*n for i in range(m)]
-        res = 0
-
-        for i in range(m):
-            curr_left = 0
-            for j in range(n):
-                if matrix[i][j] == "0":
-                    left[i][j] = 0
-                    curr_left = j + 1
-                else:
-                    left[i][j] = curr_left
-
-                left_pos = left[i][j]
-                for h in range(i, -1, -1):
-                    if matrix[h][j] == '0':
-                        break
-                    left_pos = max(left_pos, left[h][j])
-                    res += j - left_pos + 1
-        return res
 
 sol = Solution()
 grid = [["1","0","1","0","0"],["1","0","1","1","1"],["1","0","1","1","1"]]
