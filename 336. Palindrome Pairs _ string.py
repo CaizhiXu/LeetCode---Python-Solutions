@@ -1,48 +1,36 @@
-from collections import defaultdict
+## time - O(nk**2), space - O(kn**2)
 class TrieNode:
     def __init__(self):
-        self.next = defaultdict(TrieNode)
-        self.ending_word = -1
-        self.palindrome_suffixes = []
+        self.children = defaultdict(TrieNode)
+        self.is_word = -1
+        self.palSuffix = []
+
 
 class Solution:
-    def palindromePairs(self, words):
-
-        # Create the Trie and add the reverses of all the words.
+    def palindromePairs(self, words: List[str]) -> List[List[int]]:
         trie = TrieNode()
-        for i, word in enumerate(words):
-            word = word[::-1] # We want to insert the reverse.
-            current_level = trie
-            for j, c in enumerate(word):
-                # Check if remainder of word is a palindrome.
-                if word[j:] == word[j:][::-1]:# Is the word the same as its reverse?
-                    current_level.palindrome_suffixes.append(i)
-                # Move down the trie.
-                current_level = current_level.next[c]
-            current_level.ending_word = i
+        for i, w in enumerate(words):
+            node = trie
+            w = w[::-1]
+            for j, c in enumerate(w):
+                if w[j:] == w[j:][::-1]:
+                    node.palSuffix.append(i)
+                node = node.children[c]
+            node.is_word = i
 
-        # Look up each word in the Trie and find palindrome pairs.
-        solutions = []
-        for i, word in enumerate(words):
-            current_level = trie
-            for j, c in enumerate(word):
-                # Check for case 3.
-                if current_level.ending_word != -1:
-                    if word[j:] == word[j:][::-1]: # Is the word the same as its reverse?
-                        solutions.append([i, current_level.ending_word])
-                if c not in current_level.next:
+        res = []
+        for i, w in enumerate(words):
+            node = trie
+            for j, c in enumerate(w):
+                if w[j:] == w[j:][::-1] and node.is_word != -1:
+                    res.append([i, node.is_word])
+                if c not in node.children:
                     break
-                current_level = current_level.next[c]
-            else: # Case 1 and 2 only come up if whole word was iterated.
-                # Check for case 1.
-                if current_level.ending_word != -1 and current_level.ending_word != i:
-                    solutions.append([i, current_level.ending_word])
-                # Check for case 2.
-                for j in current_level.palindrome_suffixes:
-                    solutions.append([i, j])
-        return solutions
+                node = node.children[c]
+            else:
+                if node.is_word != -1 and node.is_word != i:
+                    res.append([i, node.is_word])
+                for j in node.palSuffix:
+                    res.append([i, j])
 
-
-s = ["abcd","dcba","lls","s","sssll"]
-sol = Solution()
-print(sol.palindromePairs(s))
+        return res

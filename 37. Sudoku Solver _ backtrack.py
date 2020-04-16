@@ -30,3 +30,45 @@ class Solution:
                 return True
             board[r][c] = '.'
         return False
+
+
+## time - less than (9!)**9, space - O(9**2
+class Solution:
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        n = len(board)
+        rows = [set(range(1, n + 1)) for _ in range(n + 1)]
+        cols = [set(range(1, n + 1)) for _ in range(n + 1)]
+        boxes = [set(range(1, n + 1)) for _ in range(n + 1)]
+        for i in range(n):
+            for j in range(n):
+                if board[i][j] != '.':
+                    num = int(board[i][j])
+                    rows[i].remove(num)
+                    cols[j].remove(num)
+                    boxes[j // 3 + (i // 3) * 3].remove(num)
+        self.dfs(0, rows, cols, boxes, board)
+
+    def dfs(self, curr, rows, cols, boxes, board):
+        if curr == 9 * 9:
+            return True
+        r, c = curr // 9, curr % 9
+        b = c // 3 + (r // 3) * 3
+        if board[r][c] != '.':
+            return self.dfs(curr + 1, rows, cols, boxes, board)
+
+        candidates = rows[r] & cols[c] & boxes[b]
+        for num in candidates:
+            board[r][c] = str(num)
+            rows[r].remove(num)
+            cols[c].remove(num)
+            boxes[b].remove(num)
+            if self.dfs(curr + 1, rows, cols, boxes, board):
+                return True
+            board[r][c] = '.'
+            rows[r].add(num)
+            cols[c].add(num)
+            boxes[b].add(num)
+        return False
