@@ -16,3 +16,21 @@ class Solution:
                     vol += right_h - height[right]
                     right -= 1
         return vol
+
+
+
+## time - O(n), space - O(n)
+class Solution2:
+    def trap(self, height: List[int]) -> int:
+        vol = 0
+        stack = [-1]
+        for i, h in enumerate(height):
+            while stack[-1] != -1 and height[stack[-1]] < h:
+                tmp = stack.pop()
+                if stack[-1] == -1:
+                    continue
+                upper = min(height[stack[-1]], h)
+                width = i - stack[-1] -1
+                vol += (upper - height[tmp])*width
+            stack.append(i)
+        return vol
