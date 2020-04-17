@@ -31,3 +31,31 @@ class Solution:
                         rooms[ni][nj] = dep + 1
 
         return
+
+
+## time - O(mn), space - O(mn)
+from collections import deque
+
+
+class Solution2:
+    def wallsAndGates(self, rooms: List[List[int]]) -> None:
+        """
+        Do not return anything, modify rooms in-place instead.
+        """
+        if not rooms:
+            return
+        dq = deque()
+        m, n = len(rooms), len(rooms[0])
+        for i in range(m):
+            for j in range(n):
+                if rooms[i][j] == 0:
+                    dq.append((i, j, 0))
+
+        while dq:
+            x, y, dist = dq.pop()
+            for dx, dy in [[-1, 0], [1, 0], [0, -1], [0, 1]]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < m and 0 <= ny < n and \
+                        rooms[nx][ny] > dist + 1:
+                    rooms[nx][ny] = dist + 1
+                    dq.appendleft((nx, ny, dist + 1))
