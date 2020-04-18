@@ -71,7 +71,7 @@ class Solution2:
         return self.helper(num, numToStr1, numToStr2)
 
     def helper(self, num, numToStr1, numToStr2):
-        T, M, B = 1000, 1000000, 1000000000
+        units = {10**3: "Thousand", 10**6: "Million", 10**9: "Billion"}
         if 0 <= num <= 19:
             return numToStr1[num]
         if num < 100:
@@ -84,21 +84,13 @@ class Solution2:
             if num % 100 != 0:
                 s += ' ' + self.helper(num % 100, numToStr1, numToStr2)
             return s
-        if num < M:
-            s = self.helper(num // T, numToStr1, numToStr2) + " Thousand"
-            if num % T != 0:
-                s += ' ' + self.helper(num % T, numToStr1, numToStr2)
-            return s
-        if num < B:
-            s = self.helper(num // M, numToStr1, numToStr2) + " Million"
-            if num % M != 0:
-                s += ' ' + self.helper(num % M, numToStr1, numToStr2)
-            return s
-        else:
-            s = self.helper(num // B, numToStr1, numToStr2) + " Billion"
-            if num % B != 0:
-                s += ' ' + self.helper(num % B, numToStr1, numToStr2)
-            return s
+
+        for k in sorted(units.keys()):
+            if num < k*1000:
+                s = self.helper(num // k, numToStr1, numToStr2) + " " + units[k]
+                if num % k != 0:
+                    s += ' ' + self.helper(num % k, numToStr1, numToStr2)
+                return s
 
 
 ### convert words to integers
