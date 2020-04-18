@@ -58,3 +58,82 @@ class Solution:
                 res.append(strToWord[s])
                 n -= 1
         return res
+
+
+## time, space - O(n)
+class Solution2:
+    def numberToWords(self, num: int) -> str:
+        numToStr1 = 'Zero One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Thirteen Fourteen Fifteen Sixteen Seventeen Eighteen Nineteen'
+        numToStr2 = 'Twenty Thirty Forty Fifty Sixty Seventy Eighty Ninety'
+        numToStr1 = numToStr1.split(' ')
+        numToStr2 = numToStr2.split(' ')
+
+        return self.helper(num, numToStr1, numToStr2)
+
+    def helper(self, num, numToStr1, numToStr2):
+        T, M, B = 1000, 1000000, 1000000000
+        if 0 <= num <= 19:
+            return numToStr1[num]
+        if num < 100:
+            s = numToStr2[num // 10 - 2]
+            if num % 10 != 0:
+                s += ' ' + numToStr1[num % 10]
+            return s
+        if num < T:
+            s = numToStr1[num // 100] + " Hundred"
+            if num % 100 != 0:
+                s += ' ' + self.helper(num % 100, numToStr1, numToStr2)
+            return s
+        if num < M:
+            s = self.helper(num // T, numToStr1, numToStr2) + " Thousand"
+            if num % T != 0:
+                s += ' ' + self.helper(num % T, numToStr1, numToStr2)
+            return s
+        if num < B:
+            s = self.helper(num // M, numToStr1, numToStr2) + " Million"
+            if num % M != 0:
+                s += ' ' + self.helper(num % M, numToStr1, numToStr2)
+            return s
+        else:
+            s = self.helper(num // B, numToStr1, numToStr2) + " Billion"
+            if num % B != 0:
+                s += ' ' + self.helper(num % B, numToStr1, numToStr2)
+            return s
+
+
+### convert words to integers
+class Convertion:
+    def wordToInteger(self, words):
+        ## converts words to integers and return them
+        words = words.split(' ')
+        multipliers = {'Thousand': 1000, 'Million': 1000000, 'Billion': 1000000000}
+
+        pre = 0
+        res = 0
+        for i, w in enumerate(words):
+            if w in multipliers:
+                num = self.helper(words[pre:i])
+                res += num * multipliers[w]
+                pre = i + 1
+        res += self.helper(words[pre:])
+        return res
+
+    def helper(self, words):
+        if not words:
+            return 0
+        ## converts several words to a number
+        strToNum = {'Zero':0, 'One':1, 'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8, \
+                    'Nine':9, 'Ten':10, 'Eleven':11, 'Twelve':12, 'Thirteen':13, 'Fourteen':14, 'Fifteen':15, \
+                    'Sixteen':16, 'Seventeen':17, 'Eighteen':18, 'Nineteen':19, 'Twenty':20, 'Thirty':30, \
+                    'Forty':40, 'Fifty':50, 'Sixty':60, 'Seventy':40, 'Eighty':80, 'Ninety':90}
+        res = 0
+        first = strToNum[words[0]]
+        if len(words)>1 and words[1] == 'Hundred':
+            res += first*100 + self.helper(words[2:])
+        else:
+            res += first + self.helper(words[1:])
+        return res
+
+sol = Convertion()
+words = "One Billion One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+print(sol.wordToInteger(words))
