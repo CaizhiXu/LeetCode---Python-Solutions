@@ -140,3 +140,5 @@ class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         nodes = [Node(n) for n in nums]
         return [node.val for node in sorted(nodes)]
+
+
