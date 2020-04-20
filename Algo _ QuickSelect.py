@@ -1,17 +1,24 @@
 ## Type I
+import random
 class Solution:
     def findKthSmallest(self, nums, k):
-        if nums:
-            pos = self.partition(nums, 0, len(nums) - 1)
+
+        l, r = 0, len(nums)-1
+
+        while True:
+            pos = self.partition(nums, l, r)
+            print(nums)
             if k > pos + 1:
-                return self.findKthSmallest(nums[pos + 1:], k - pos - 1)
+                l = pos+1
             elif k < pos + 1:
-                return self.findKthSmallest(nums[:pos], k)
+                r = pos-1
             else:
                 return nums[pos]
 
     # choose the right-most element as pivot
     def partition(self, nums, l, r):
+        ran = random.randint(l,r)
+        nums[ran], nums[r] = nums[r], nums[ran]
         low = l
         while l < r:
             if nums[l] < nums[r]:
@@ -21,13 +28,15 @@ class Solution:
         nums[low], nums[r] = nums[r], nums[low]
         return low
 
-
+nums = [3, 1, 1.5, 2.5, 3, 1, 2, 3, 5, 6, 4, 3, 3]
+sol = Solution()
+sol.findKthSmallest(nums, 5)
 
 
 ## Type II
 from random import randint
 
-class Solution(object):
+class Solution2(object):
     def findKthLargest(self, nums, k):
         """
         :type nums: List[int]
@@ -53,3 +62,4 @@ class Solution(object):
                 r = pos - 1
             else:
                 return nums[pos]
+
