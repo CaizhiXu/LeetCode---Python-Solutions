@@ -18,14 +18,14 @@ class Solution:
     def partition(self, nums, l, r):
         ran = random.randint(l,r)
         nums[ran], nums[r] = nums[r], nums[ran]
-        low = l
-        while l < r:
-            if nums[l] < nums[r]:
-                nums[l], nums[low] = nums[low], nums[l]
-                low += 1
-            l += 1
-        nums[low], nums[r] = nums[r], nums[low]
-        return low
+        i = l
+        while i < r:
+            if nums[i] < nums[r]:
+                nums[i], nums[l] = nums[l], nums[i]
+                l += 1
+            i += 1
+        nums[l], nums[r] = nums[r], nums[l]
+        return l
 
 nums = [3, 1, 1.5, 2.5, 3, 1, 2, 3, 5, 6, 4, 3, 3]
 sol = Solution()
