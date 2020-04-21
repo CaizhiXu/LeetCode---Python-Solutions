@@ -1,10 +1,9 @@
-## Type I
+## Type I， baseline
 import random
 class Solution:
     def findKthSmallest(self, nums, k):
 
         l, r = 0, len(nums)-1
-
         while True:
             pos = self.partition(nums, l, r)
             print(nums)
@@ -31,6 +30,8 @@ class Solution:
 nums = [3, 1, 1.5, 2.5, 3, 1, 2, 3, 5, 6, 4, 3, 3]
 sol = Solution()
 sol.findKthSmallest(nums, 5)
+
+
 
 
 ## Type II
