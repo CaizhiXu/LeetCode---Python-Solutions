@@ -35,3 +35,46 @@ class Solution:
                 right = low - 1
             else:
                 return
+
+
+## time - O(n), space - O(n)
+import heapq
+import random
+
+
+class Solution2:
+    def kClosest(self, points: List[List[int]], K: int) -> List[List[int]]:
+        """
+        brutal force: O(nlogn), O(n)
+        quickSelect: O(n), O(1)
+        points[:K]
+        """
+        if not points or K >= len(points):
+            return points
+
+        l, r = 0, len(points) - 1
+        while l < r:
+            pos = self.partition(points, l, r)
+            if pos + 1 == K:
+                break
+            elif pos + 1 < K:
+                l = pos + 1
+            else:
+                r = pos - 1
+        return points[:K]
+
+    def partition(self, points, l, r):
+        idx = random.randint(l, r)
+        points[idx], points[r] = points[r], points[idx]
+        i = l
+        while i < r:
+            if self.distance(points[i]) < self.distance(points[r]):
+                points[i], points[l] = points[l], points[i]
+                l += 1
+            i += 1
+        points[r], points[l] = points[l], points[r]
+        return l
+
+    def distance(self, pos):
+        x, y = pos
+        return x ** 2 + y ** 2

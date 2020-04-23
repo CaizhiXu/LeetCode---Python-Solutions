@@ -28,3 +28,28 @@ class Solution:
         return ''.join(res)
 
 
+## time - O(n), space - O(n)
+class Solution2:
+    def minRemoveToMakeValid(self, s: str) -> str:
+        toRemove = set()
+        stack = []  ## stores idx of unmatched "("
+        balance = 0
+
+        for i, c in enumerate(s):
+            if c == '(':
+                balance += 1
+                stack.append(i)
+            elif c == ')':
+                if balance == 0:
+                    toRemove.add(i)
+                else:
+                    stack.pop()
+                    balance -= 1
+        while stack:
+            toRemove.add(stack.pop())
+
+        res = []
+        for i, c in enumerate(s):
+            if i not in toRemove:
+                res.append(c)
+        return ''.join(res)
