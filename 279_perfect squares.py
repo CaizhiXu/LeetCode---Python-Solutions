@@ -24,6 +24,7 @@ class Solution2(object):
                 dp[j] = min(dp[j],dp[j-curr*curr]+1)
         return dp[-1]
 
+
 ## sol3 - BFS, fastest solution
 class Solution(object):
     def numSquares(self, n):
