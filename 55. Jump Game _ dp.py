@@ -10,6 +10,7 @@ class Solution:
 
         return pos == 0
 
+
 ## DP, bottom up
 class Solution2:
     def canJump(self, nums: List[int]) -> bool:
