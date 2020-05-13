@@ -22,4 +22,4 @@ class Solution:
                         minLen = end - i
                         start = i
             i += 1
-        return S[start:start + minLen] if start != -1 else ''
+        return S[start:start + minLen] if start != -1 else ' '
