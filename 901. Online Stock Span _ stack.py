@@ -17,3 +17,19 @@ class StockSpanner:
 # Your StockSpanner object will be instantiated and called as such:
 # obj = StockSpanner()
 # param_1 = obj.next(price)
+
+
+
+class StockSpanner2:
+
+    def __init__(self):
+        self.stack = [(-1, float('inf'))]
+        self.cnt = 0
+
+    def next(self, price: int) -> int:
+        while self.stack[-1][1] <= price:
+            self.stack.pop()
+        res = self.cnt - self.stack[-1][0]
+        self.stack.append((self.cnt, price))
+        self.cnt += 1
+        return res
