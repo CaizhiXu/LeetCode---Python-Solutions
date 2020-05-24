@@ -103,3 +103,32 @@ class Solution:
                 j += 1
         nums[j], nums[r] = nums[r], nums[j]
         return j
+
+
+"""
+after for loop
+[s1, j, s2, pivot]
+nums[s1] < pivot
+nums[j, s2] >= pivot
+
+after the swap before return
+[s1, j, s2]
+nums[s1] < pivot
+nums[j] = pivot
+nums[s2] >= pivot
+
+
+
+[1,2,3,5,6,4]
+
+0 -> j, <= pivot
+> pivot
+
+k = 5
+j = 1
+j == n-k, return nums[pos]
+
+
+
+
+"""
