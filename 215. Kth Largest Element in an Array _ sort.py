@@ -74,3 +74,32 @@ class Solution:
                 start = low + 1
             elif N-low < k:
                 end = low - 1
+
+
+## time - O(n), space - O(1)
+import random
+
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        l, r = 0, len(nums) - 1
+        n = len(nums)
+        while l < r:
+            pos = self.partition(nums, l, r)
+            if pos == n - k:
+                return nums[pos]
+            elif pos > n - k:
+                r = pos - 1
+            else:
+                l = pos + 1
+        return nums[l]
+
+    def partition(self, nums, l, r):
+        rid = random.randint(l, r)
+        nums[r], nums[rid] = nums[rid], nums[r]
+        j = l
+        for i in range(l, r):
+            if nums[i] < nums[r]:
+                nums[i], nums[j] = nums[j], nums[i]
+                j += 1
+        nums[j], nums[r] = nums[r], nums[j]
+        return j

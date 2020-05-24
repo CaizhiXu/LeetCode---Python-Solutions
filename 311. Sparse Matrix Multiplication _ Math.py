@@ -16,25 +16,29 @@ class Solution:
 
 
 ## time - less than m*n*nB, space - m*nB
-class Solution:
+class Solution2:
     def multiply(self, A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
         if not A or not A[0] or not B or not B[0]:
-            return None
+            return []
         m, n = len(A), len(A[0])
         k = len(B[0])
-        if len(B) != n:
-            raise Exception("Dimension mismatch!")
+        if n != len(B):
+            raise ValueError("Dimension mismatch!")
 
-        res = [[0] * k for i in range(m)]
-        nonZero = {}
-        for i, row in enumerate(B):
-            nonZero[i] = {}
+        dictA = self.matrixDict(A)
+        dictB = self.matrixDict(B)
+        c = [[0] * k for i in range(m)]
+        for i in range(m):
+            for l, eleA in dictA[i].items():
+                for j, eleB in dictB[l].items():
+                    c[i][j] += eleA * eleB
+        return c
+
+    def matrixDict(self, matrix):
+        dct = {}
+        for i, row in enumerate(matrix):
+            dct[i] = {}
             for j in range(len(row)):
                 if row[j] != 0:
-                    nonZero[i][j] = row[j]
-        for i, row in enumerate(A):
-            for k, eleA in enumerate(row):
-                if eleA != 0:
-                    for j, eleB in nonZero[k].items():
-                        res[i][j] += eleA * eleB
-        return res
+                    dct[i][j] = row[j]
+        return dct
