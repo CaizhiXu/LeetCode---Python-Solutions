@@ -77,6 +77,10 @@ class Solution:
 
 
 ## time - O(n), space - O(1)
+
+1st largest <--> nth smallest
+2nd largest <--> (n-1)th smallest
+
 import random
 
 class Solution:
@@ -118,17 +122,30 @@ nums[j] = pivot
 nums[s2] >= pivot
 
 
+kth smallest number
+[1, 2, 3(j), 5, 6, 4,  100]
 
-[1,2,3,5,6,4]
+             [4, 5, 6, 100]
+the (j+1) th smallest number in this array is nums[j]
 
-0 -> j, <= pivot
-> pivot
+if j+1 == k:
+    return nums[j+1]
+elif j+1 > k:
+    r = j-1
+else:
+    l = j+1
+    
+    
+   
 
-k = 5
-j = 1
-j == n-k, return nums[pos]
 
 
+pivot = 3
+
+j <= i 
+nums[j] >= pivot
+
+...j ..... i .....pivot
 
 
 """
