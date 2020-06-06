@@ -1,26 +1,27 @@
-# time log(max-min)*n*logn, space - O(1)
+# time log(max-min)*n, space - O(1)
 class Solution:
     def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
-        low, high = matrix[0][0], matrix[-1][-1]
-        while low + 1 < high:
-            mid = low + (high - low) // 2
-            cnt = self.count(matrix, mid)
+        left, right = matrix[0][0], matrix[-1][-1]
+        while left < right:
+            mid = left + (right - left) // 2
+            cnt = self.helper(matrix, mid)
             if cnt < k:
-                low = mid
+                left = mid + 1
             else:
-                high = mid
+                right = mid
+        return left
 
-        cnt = self.count(matrix, low)
-        if cnt >= k:
-            return low
-        else:
-            return high
-
-    def count(self, matrix, num):
-        res = 0
-        for row in matrix:
-            res += bisect.bisect_right(row, num)
-        return res
+    def helper(self, matrix, num):
+        ## return # of elements no bigger than num
+        j = len(matrix[0]) - 1
+        cnt = 0
+        for i in range(len(matrix)):
+            while j >= 0 and matrix[i][j] > num:
+                j -= 1
+            if j == -1:
+                break
+            cnt += j + 1
+        return cnt
 
 
 # time - O(n+klogn), space - O(n)
