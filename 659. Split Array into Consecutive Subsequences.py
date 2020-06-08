@@ -33,3 +33,36 @@ class Solution:
             return False
         else:
             return True
+
+
+
+## sol2
+from collections import defaultdict, deque
+
+
+class Solution(object)2:
+    def isPossible(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+
+        num_length = defaultdict(deque)
+
+        for num in nums:
+            if num - 1 not in num_length:
+                num_length[num].append(1)
+            else:
+                length = num_length[num - 1].pop()
+                if len(num_length[num - 1]) == 0:
+                    del num_length[num - 1]
+                if length + 1 >= 3:
+                    num_length[num].appendleft(length + 1)
+                else:
+                    num_length[num].append(length + 1)
+
+        for num, length in num_length.items():
+            for l in length:
+                if l < 3:
+                    return False
+        return True
