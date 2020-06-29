@@ -25,3 +25,32 @@ class Solution:
             return ''
         else:
             return ''.join(res)
+
+
+## round-robin, time - O(nlogn), space - O(n)
+
+class Solution:
+    def rearrangeString(self, s: str, k: int) -> str:
+        temp = Counter(s)
+        cnts = [(v, k) for k, v in temp.items()]
+        cnts.sort(reverse=True)
+        maxCnt = cnts[0][0]
+        res = [[] for _ in range(maxCnt)]
+
+        idx = 0
+        for num, c in cnts:
+            i = 0
+            if num == maxCnt:
+                r = maxCnt
+            else:
+                r = maxCnt - 1
+            while i < num:
+                res[idx % r].append(c)
+                idx += 1
+                i += 1
+
+        for i in range(len(res)):
+            if i < maxCnt - 1 and len(res[i]) < k:
+                return ""
+            res[i] = "".join(res[i])
+        return "".join(res)
