@@ -9,7 +9,6 @@ class Codec:
 
     def serialize(self, root):
         """Encodes a tree to a single string.
-
         :type root: TreeNode
         :rtype: str
         """
