@@ -47,3 +47,5 @@ s = "catsanddog"
 wordDict = ["cat","cats","and","sand","dog"]
 sol = Solution()
 print(sol.wordBreak(s, wordDict))
+
+
