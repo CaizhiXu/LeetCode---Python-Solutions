@@ -1,24 +1,29 @@
 class Solution:
-    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+    def canPartitionKSubsets(self, nums, k):
         total = sum(nums)
         if total % k:
             return False
         target = total // k
 
         visited = {}
-        return self.dfs(0, 0, visited, nums, target, total)
+        res = []
+        self.dfs(0, 0, visited, nums, target, total//k, res)
+        return res
 
-    def dfs(self, currSum, state, visited, nums, target, total):
-        if currSum == total:
-            visited[state] = True
-            return True
+    def dfs(self, currSum, state, visited, nums, target, total, res):
         if state in visited:
             return visited[state]
+        if currSum == total:
+            visited[state] = True
+            visited[2**len(nums)-1-state] = True
+            res.append(state)
+            return True
+
         for i, num in enumerate(nums):
             if ((state >> i) & 1 == 0) and num <= target - currSum % target:
-                if self.dfs(currSum + num, state | (1 << i), visited, nums, target, total):
+                if self.dfs(currSum + num, state | (1 << i), visited, nums, target, total, res):
                     visited[state] = True
-                    return True
+                    #return True
         visited[state] = False
         return False
 
@@ -49,9 +54,39 @@ class Solution1(object):
         return dp[-1]
 
 
-nums = [4, 3, 2, 2, 5]
+class Solution3:
+    def canPartitionKSubsets(self, nums, k):
+        total = sum(nums)
+        if total % k:
+            return False
+        target = total // k
+
+        visited = {}
+        res = []
+        self.dfs(0, 0, visited, nums, target, total//k, res)
+        return res
+
+    def dfs(self, currSum, state, visited, nums, target, total, res):
+        if state in visited:
+            return visited[state]
+        if currSum == total:
+            visited[state] = True
+            visited[2**len(nums)-1-state] = True
+            res.append(state)
+            return True
+
+        for i, num in enumerate(nums):
+            if ((state >> i) & 1 == 0) and num <= target - currSum % target:
+                if self.dfs(currSum + num, state | (1 << i), visited, nums, target, total, res):
+                    visited[state] = True
+                    #return True
+        visited[state] = False
+        return False
+
+
+nums = [1, 2, 3, 4, 5, 6, 7]
 k = 2
-print(Solution1().canPartitionKSubsets(nums, k))
+print(Solution3().canPartitionKSubsets(nums, k))
 
 
 """
