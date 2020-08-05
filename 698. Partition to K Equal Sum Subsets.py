@@ -1,3 +1,32 @@
+## this version works, but the time complexity is not optimized
+class Solution:
+    def canPartitionKSubsets(self, nums: List[int], k: int) -> bool:
+        total = sum(nums)
+        if total % k:
+            return False
+        target = total // k
+
+        visited = set()
+        return self.dfs(0, visited, nums, target)
+
+    def dfs(self, currSum, visited, nums, target):
+        if len(visited) == len(nums):
+            return True
+        for i, num in enumerate(nums):
+            if i not in visited and num <= target - currSum % target:
+                visited.add(i)
+                currSum += num
+                if self.dfs(currSum, visited, nums, target):
+                    return True
+                currSum -= num
+                visited.remove(i)
+        return False
+
+
+
+
+
+
 class Solution:
     def canPartitionKSubsets(self, nums, k):
         total = sum(nums)
@@ -7,23 +36,23 @@ class Solution:
 
         visited = {}
         res = []
-        self.dfs(0, 0, visited, nums, target, total//k, res)
+        self.dfs(0, 0, visited, nums, target, total)
         return res
 
-    def dfs(self, currSum, state, visited, nums, target, total, res):
+    def dfs(self, currSum, state, visited, nums, target, total):
         if state in visited:
             return visited[state]
+
         if currSum == total:
             visited[state] = True
             visited[2**len(nums)-1-state] = True
-            res.append(state)
             return True
 
         for i, num in enumerate(nums):
             if ((state >> i) & 1 == 0) and num <= target - currSum % target:
                 if self.dfs(currSum + num, state | (1 << i), visited, nums, target, total, res):
                     visited[state] = True
-                    #return True
+                    return True
         visited[state] = False
         return False
 
